@@ -45,9 +45,13 @@ public class MouseSelect : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && DotaUi.miniMapDown)
+        if (Input.GetMouseButton(0) && !isMouseDown)
         { // 鼠标按住时
-            MiniMapClick();
+            var es = UnityEngine.EventSystems.EventSystem.current;
+            if (es != null && es.IsPointerOverGameObject())//如果用户点击了2D空间中的某些UI元素，我们就要避免选中UI后的3D对象，同时还要检测是否点击了2D元素  
+            { 
+                MiniMapClick();
+            }
         }
 
         if (Input.GetMouseButtonDown(0) && !IsMouseInMiniMap())
@@ -154,7 +158,7 @@ public class MouseSelect : MonoBehaviour {
 
     bool IsMouseInMiniMap()
     {
-        DotaUi.MiniMapSize();
+        //DotaUi.MiniMapSize();
         Vector2 mousepos = Input.mousePosition;
         if (mousepos.x < DotaUi.miniMapLeftPos.x || mousepos.y < DotaUi.miniMapLeftPos.y || mousepos.x > DotaUi.miniMapRightPos.x || mousepos.y > DotaUi.miniMapRightPos.y)
         {
